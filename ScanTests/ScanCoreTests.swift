@@ -409,7 +409,7 @@ final class ScanCoreTests: XCTestCase {
         let suiteName = "ScanCoreTests-\(UUID().uuidString)"
         let defaults = try XCTUnwrap(UserDefaults(suiteName: suiteName))
         addTeardownBlock { UserDefaults().removePersistentDomain(forName: suiteName) }
-        return ScannerWorkspaceViewModel(discovery: discovery, registry: registry, outputWriter: ScanOutputWriter(), profileStore: ScanProfileStore(defaults: defaults), automaticRefreshDelay: .milliseconds(20))
+        return ScannerWorkspaceViewModel(discovery: discovery, registry: registry, outputWriter: ScanOutputWriter(), profileStore: ScanProfileStore(defaults: defaults), automaticRefreshDelay: .milliseconds(20), statisticsStore: .temporaryForTests)
     }
 
     private func usbIdentity(_ productID: UInt16) -> ScannerIdentity {

@@ -76,7 +76,7 @@ final class PageQuickLookTests: XCTestCase {
 
     @MainActor
     func testPanelPreviewsExactlyTheSelectedPage() async throws {
-        let workspace = ScannerWorkspaceViewModel(discovery: StubDiscovery(), registry: ScannerDriverRegistry(drivers: []), outputWriter: ScanOutputWriter(), profileStore: ScanProfileStore(defaults: UserDefaults(suiteName: "PageQuickLookTests")!))
+        let workspace = ScannerWorkspaceViewModel(discovery: StubDiscovery(), registry: ScannerDriverRegistry(drivers: []), outputWriter: ScanOutputWriter(), profileStore: ScanProfileStore(defaults: UserDefaults(suiteName: "PageQuickLookTests")!), statisticsStore: .temporaryForTests)
         let controller = PageQuickLookController()
         controller.workspace = workspace
         XCTAssertEqual(controller.numberOfPreviewItems(in: nil), 0)

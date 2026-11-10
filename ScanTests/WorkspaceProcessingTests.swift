@@ -12,7 +12,7 @@ final class WorkspaceProcessingTests: XCTestCase {
 
     private func makeWorkspace() -> ScannerWorkspaceViewModel {
         let defaults = UserDefaults(suiteName: "WorkspaceProcessingTests-\(UUID().uuidString)")!
-        let workspace = ScannerWorkspaceViewModel(discovery: NoDiscovery(), registry: ScannerDriverRegistry(drivers: []), outputWriter: ScanOutputWriter(), profileStore: ScanProfileStore(defaults: defaults))
+        let workspace = ScannerWorkspaceViewModel(discovery: NoDiscovery(), registry: ScannerDriverRegistry(drivers: []), outputWriter: ScanOutputWriter(), profileStore: ScanProfileStore(defaults: defaults), statisticsStore: .temporaryForTests)
         var profile = workspace.selectedProfile
         profile.options.processing = ImageProcessingSettings(removeBlankPages: true, whitenPaper: true)
         workspace.updateProfile(profile)
