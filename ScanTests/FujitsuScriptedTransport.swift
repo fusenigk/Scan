@@ -31,6 +31,9 @@ final class FujitsuScriptedTransport: USBDeviceTransport, @unchecked Sendable {
     /// Answer `SEND` of the gamma table (data type 0x83) with ILLEGAL REQUEST,
     /// like a scanner whose A/D width does not match the table size.
     private let rejectsGammaTable: Bool
+    /// GET HW STATUS sensor bits, for the pre-scan sensor check.
+    var reportsCoverOpen = false
+    var reportedErrorCode: UInt8 = 0
 
     init(identity: ScannerIdentity, pixelWidth: Int, pixelHeight: Int, sheets: Int, rejectsGammaTable: Bool = false, temporaryNoDataReadsForFront: Int = 0, temporaryNoDataReadsForBack: Int = 0) {
         self.identity = identity
@@ -171,7 +174,8 @@ final class FujitsuScriptedTransport: USBDeviceTransport, @unchecked Sendable {
             }
         case 0xc2: // GET HW STATUS
             var response = [UInt8](repeating: 0, count: 12)
-            response[3] = sheetsRemaining == 0 ? 0x80 : 0x00
+            response[3] = (sheetsRemaining == 0 ? 0x80 : 0x00) | (reportsCoverOpen ? 0x20 : 0x00)
+            response[7] = reportedErrorCode
             pendingDataIn = Data(response.prefix(Self.int(cdb, 7, 2)))
         case 0xf1: // SCANNER CONTROL (incl. read-image-count)
             break
